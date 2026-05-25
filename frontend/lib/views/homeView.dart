@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/services/bucketService.dart';
 import 'package:bucket_list/views/BucketView.dart';

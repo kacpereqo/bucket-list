@@ -1,6 +1,9 @@
+import 'TaskDTO.dart';
+
 class TodoListDTO {
   final int id;
   final String name;
+  List<TaskDTO> tasks = [];
 
-  TodoListDTO({required this.id, required this.name});
+  TodoListDTO({required this.id, required this.name, this.tasks = const []});
 }

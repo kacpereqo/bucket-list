@@ -1,5 +1,6 @@
 import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/dto/todoListDTO.dart';
+import 'package:bucket_list/dto/TaskDTO.dart';
 
 class BucketService {
   BucketService._();
@@ -11,7 +12,15 @@ class BucketService {
       id: 0,
       name: "Bucket 1",
       todoLists: [
-        TodoListDTO(id: 1, name: "Todo list 1"),
+        TodoListDTO(
+          id: 1,
+          name: "Todo list 1",
+          tasks: [
+            TaskDTO(id: 1, title: "Task 1"),
+            TaskDTO(id: 2, title: "Task 2"),
+            TaskDTO(id: 3, title: "Task 3"),
+          ],
+        ),
         TodoListDTO(id: 2, name: "Todo list 2"),
         TodoListDTO(id: 3, name: "Todo list 3"),
       ],

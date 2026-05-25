@@ -1,7 +1,7 @@
 import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/services/bucketService.dart';
+import 'package:bucket_list/widgets/todo_list.dart';
 import 'package:flutter/material.dart';
-import 'package:bucket_list/dto/todoListDTO.dart';
 
 class BucketView extends StatefulWidget {
   final BucketDTO bucket;
@@ -28,12 +28,6 @@ class _BucketViewState extends State<BucketView> with TickerProviderStateMixin {
 
     setState(() {
       oldController?.dispose();
-    });
-  }
-
-  void fetchData() {
-    setState(() {
-      _recreateController();
     });
   }
 
@@ -114,7 +108,7 @@ class _BucketViewState extends State<BucketView> with TickerProviderStateMixin {
             controller: _controller,
             children:
                 widget.bucket.todoLists.map((e) {
-                  return Center(child: Text(e.name));
+                  return Center(child: TodoList(todolist: e));
                 }).toList() +
                 [Center()],
           ),
