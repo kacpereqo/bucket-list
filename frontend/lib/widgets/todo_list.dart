@@ -8,7 +8,7 @@ import 'package:bucket_list/modals/addTaskModal.dart';
 class TodoList extends StatefulWidget {
   final TodoListDTO todolist;
 
-  TodoList({super.key, required this.todolist});
+  const TodoList({super.key, required this.todolist});
 
   @override
   State<TodoList> createState() => _TodoListState();

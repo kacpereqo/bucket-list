@@ -1,7 +1,6 @@
 import 'package:bucket_list/dto/TaskDTO.dart';
 import 'package:bucket_list/services/bucketService.dart';
 import 'package:flutter/material.dart';
-import 'package:bucket_list/modals/addTaskModal.dart';
 
 class Task extends StatefulWidget {
   final TaskDTO task;

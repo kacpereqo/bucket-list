@@ -8,7 +8,7 @@ class BucketService extends ChangeNotifier {
 
   static final BucketService instance = BucketService._();
 
-  List<BucketDTO> _lists = [
+  final List<BucketDTO> _lists = [
     BucketDTO(
       id: 0,
       name: "Bucket 1",
