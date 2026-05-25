@@ -49,14 +49,6 @@ class _TaskState extends State<Task> {
     );
   }
 
-  void _showEditModal() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => AddTaskModal(onSave: (newTitle, newDesc) {}),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDone = widget.task.isDone;
@@ -88,12 +80,14 @@ class _TaskState extends State<Task> {
             decoration: isDone ? TextDecoration.lineThrough : null,
           ),
         ),
-        subtitle: Text(
-          widget.task.description,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-        ),
+        subtitle: widget.task.description.isNotEmpty
+            ? Text(
+                widget.task.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              )
+            : null,
         trailing: Checkbox(
           value: isDone,
           onChanged: (val) {
