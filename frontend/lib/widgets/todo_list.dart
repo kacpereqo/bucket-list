@@ -37,10 +37,6 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.todolist.tasks.isEmpty) {
-      return const Center(child: Text("No tasks"));
-    }
-
     return Column(
       children: [
         AddTaskTile(onTap: onAddTaskTilePressed),

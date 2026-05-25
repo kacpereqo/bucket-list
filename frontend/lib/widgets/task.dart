@@ -66,7 +66,11 @@ class _TaskState extends State<Task> {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: isDone ? Colors.green : Colors.grey.shade300),
+        side: BorderSide(
+          color: isDone
+              ? Theme.of(context).colorScheme.outline
+              : Colors.grey.shade300,
+        ),
       ),
       child: ListTile(
         onLongPress: () => _showOptions(context),

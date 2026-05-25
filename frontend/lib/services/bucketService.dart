@@ -26,24 +26,6 @@ class BucketService extends ChangeNotifier {
         TodoListDTO(id: 3, name: "Todo list 3"),
       ],
     ),
-    BucketDTO(
-      id: 1,
-      name: "Bucket 2",
-      todoLists: [
-        TodoListDTO(id: 4, name: "Todo list 1"),
-        TodoListDTO(id: 5, name: "Todo list 2"),
-        TodoListDTO(id: 6, name: "Todo list 3"),
-      ],
-    ),
-    BucketDTO(
-      id: 2,
-      name: "Bucket 3",
-      todoLists: [
-        TodoListDTO(id: 7, name: "Todo list 1"),
-        TodoListDTO(id: 8, name: "Todo list 2"),
-        TodoListDTO(id: 9, name: "Todo list 3"),
-      ],
-    ),
   ];
 
   List<BucketDTO> getAll() {
@@ -56,11 +38,13 @@ class BucketService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addTodoList(int todoListId, String name) {
+  void addTodoList(int bucketId, String name) {
     _lists
-        .firstWhere((e) => e.id == todoListId)
+        .firstWhere((e) => e.id == bucketId)
         .todoLists
-        .add(TodoListDTO(id: _lists.length, name: name));
+        .add(
+          TodoListDTO(id: DateTime.now().millisecondsSinceEpoch, name: name),
+        );
 
     notifyListeners();
   }
@@ -73,7 +57,7 @@ class BucketService extends ChangeNotifier {
             TaskDTO(
               id: DateTime.now().millisecondsSinceEpoch,
               title: title,
-              description: title,
+              description: description,
             ),
           );
 
