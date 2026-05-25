@@ -1,13 +1,14 @@
 import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/dto/todoListDTO.dart';
 import 'package:bucket_list/dto/TaskDTO.dart';
+import 'package:flutter/material.dart';
 
-class BucketService {
+class BucketService extends ChangeNotifier {
   BucketService._();
 
   static final BucketService instance = BucketService._();
 
-  final List<BucketDTO> _lists = [
+  List<BucketDTO> _lists = [
     BucketDTO(
       id: 0,
       name: "Bucket 1",
@@ -51,16 +52,54 @@ class BucketService {
 
   void addBucket(String name) {
     _lists.add(BucketDTO(id: _lists.length, name: name));
+
+    notifyListeners();
   }
 
-  void addTodoList(int bucketId, String name) {
+  void addTodoList(int todoListId, String name) {
     _lists
-        .firstWhere((e) => e.id == bucketId)
+        .firstWhere((e) => e.id == todoListId)
         .todoLists
         .add(TodoListDTO(id: _lists.length, name: name));
+
+    notifyListeners();
+  }
+
+  void addTask(int todoListId, String title, String description) {
+    for (var bucket in _lists) {
+      for (var list in bucket.todoLists) {
+        if (list.id == todoListId) {
+          list.tasks.add(
+            TaskDTO(
+              id: DateTime.now().millisecondsSinceEpoch,
+              title: title,
+              description: title,
+            ),
+          );
+
+          notifyListeners();
+          return;
+        }
+      }
+    }
+  }
+
+  void deleteTask(int taskId) {
+    for (var bucket in _lists) {
+      for (var list in bucket.todoLists) {
+        list.tasks.removeWhere((task) => task.id == taskId);
+      }
+    }
+    notifyListeners();
   }
 
   void delete(int id) {
     _lists.removeWhere((e) => e.id == id);
+
+    notifyListeners();
+  }
+
+  void toogleTaskIsDone(int taskId) {
+    notifyListeners();
   }
 }

@@ -89,7 +89,7 @@ class _BucketViewState extends State<BucketView> with TickerProviderStateMixin {
         TabBar(
           controller: _controller,
           isScrollable: true,
-          labelColor: Colors.blue,
+          labelColor: Colors.black,
           onTap: (index) {
             if (index == widget.bucket.todoLists.length) {
               _controller?.animateTo(widget.bucket.todoLists.length - 1);

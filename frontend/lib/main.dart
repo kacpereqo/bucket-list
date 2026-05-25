@@ -12,7 +12,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bucket List',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.white)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lightGreen,
+          brightness: Brightness.light,
+        ),
+      ),
       home: const HomeView(),
     );
   }

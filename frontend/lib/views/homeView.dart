@@ -1,4 +1,3 @@
-import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/services/bucketService.dart';
 import 'package:bucket_list/views/BucketView.dart';
 import 'package:flutter/material.dart';
@@ -12,62 +11,70 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final BucketService bucketService = BucketService.instance;
-
-  List<BucketDTO> sideBarBucketList = [];
-
-  int sideBarBucketListIndex = 0;
-  late Widget currentBucketView;
-
-  String currentBucketName = "";
-
-  @override
-  void initState() {
-    super.initState();
-
-    bucketService.getAll().forEach((element) {
-      sideBarBucketList.add(element);
-    });
-
-    if (sideBarBucketList.isEmpty) {
-      currentBucketView = Container();
-    } else {
-      currentBucketView = BucketView(bucket: sideBarBucketList[0]);
-    }
-
-    if (sideBarBucketList.isEmpty) {
-      currentBucketName = "-";
-    } else {
-      currentBucketName =
-          "${sideBarBucketList[sideBarBucketListIndex].name} bucket";
-    }
-  }
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(currentBucketName),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: List.generate(sideBarBucketList.length, (index) {
-            final item = sideBarBucketList[index];
+    return ListenableBuilder(
+      listenable: bucketService,
+      builder: (context, child) {
+        final buckets = bucketService.getAll().toList();
 
-            return ListTile(
-              title: Text(item.name),
-              onTap: () {
-                setState(() {
-                  currentBucketView = BucketView(bucket: item);
-                  currentBucketName = "${item.name} bucket";
-                });
-                Navigator.pop(context);
-              },
-            );
-          }),
-        ),
-      ),
-      body: Center(child: currentBucketView),
+        if (selectedIndex >= buckets.length && buckets.isNotEmpty) {
+          selectedIndex = buckets.length - 1;
+        }
+
+        final selectedBucket = buckets.isEmpty ? null : buckets[selectedIndex];
+        final currentBucketName = selectedBucket == null
+            ? "No Buckets"
+            : "${selectedBucket.name} bucket";
+
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            title: Text(
+              currentBucketName,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          drawer: Drawer(
+            child: Column(
+              children: [
+                const DrawerHeader(child: Center(child: Text("My Buckets"))),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: buckets.length,
+                    itemBuilder: (context, index) {
+                      final item = buckets[index];
+                      return ListTile(
+                        title: Text(item.name),
+                        selected: index == selectedIndex,
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.add),
+                  title: const Text("Create New Bucket"),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          body: selectedBucket == null
+              ? const Center(child: Text("No buckets available"))
+              : BucketView(bucket: selectedBucket),
+        );
+      },
     );
   }
 }

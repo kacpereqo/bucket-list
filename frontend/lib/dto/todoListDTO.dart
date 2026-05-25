@@ -5,5 +5,6 @@ class TodoListDTO {
   final String name;
   List<TaskDTO> tasks = [];
 
-  TodoListDTO({required this.id, required this.name, this.tasks = const []});
+  TodoListDTO({required this.id, required this.name, List<TaskDTO>? tasks})
+    : tasks = tasks ?? [];
 }
