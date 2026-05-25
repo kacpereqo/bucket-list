@@ -1,4 +1,5 @@
 import 'package:bucket_list/dto/bucketDTO.dart';
+import 'package:bucket_list/services/bucketService.dart';
 import 'package:bucket_list/views/BucketView.dart';
 import 'package:flutter/material.dart';
 
@@ -10,23 +11,43 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<BucketDTO> sideBarBucketList = [
-    BucketDTO(id: 0, name: "Bucket 1"),
-    BucketDTO(id: 1, name: "Bucket 2"),
-    BucketDTO(id: 2, name: "Bucket 3"),
-  ];
+  final BucketService bucketService = BucketService.instance;
+
+  List<BucketDTO> sideBarBucketList = [];
+
   int sideBarBucketListIndex = 0;
+  late Widget currentBucketView;
 
-  BucketView currentBucketView;
+  String currentBucketName = "";
 
-  _HomeViewState() : currentBucketView = BucketView(id: 0);
+  @override
+  void initState() {
+    super.initState();
+
+    bucketService.getAll().forEach((element) {
+      sideBarBucketList.add(element);
+    });
+
+    if (sideBarBucketList.isEmpty) {
+      currentBucketView = Container();
+    } else {
+      currentBucketView = BucketView(id: sideBarBucketList[0].id);
+    }
+
+    if (sideBarBucketList.isEmpty) {
+      currentBucketName = "-";
+    } else {
+      currentBucketName =
+          "${sideBarBucketList[sideBarBucketListIndex].name} bucket";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("${sideBarBucketList[sideBarBucketListIndex].name} bucket"),
+        title: Text(currentBucketName),
       ),
       drawer: Drawer(
         child: ListView(
@@ -37,7 +58,6 @@ class _HomeViewState extends State<HomeView> {
               title: Text(item.name),
               onTap: () {
                 setState(() {
-                  sideBarBucketListIndex = index;
                   currentBucketView = BucketView(id: item.id);
                 });
                 Navigator.pop(context);
