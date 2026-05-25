@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bucket_list/dto/bucketDTO.dart';
 import 'package:bucket_list/services/bucketService.dart';
 import 'package:bucket_list/views/BucketView.dart';
@@ -31,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
     if (sideBarBucketList.isEmpty) {
       currentBucketView = Container();
     } else {
-      currentBucketView = BucketView(id: sideBarBucketList[0].id);
+      currentBucketView = BucketView(bucket: sideBarBucketList[0]);
     }
 
     if (sideBarBucketList.isEmpty) {
@@ -58,7 +60,8 @@ class _HomeViewState extends State<HomeView> {
               title: Text(item.name),
               onTap: () {
                 setState(() {
-                  currentBucketView = BucketView(id: item.id);
+                  currentBucketView = BucketView(bucket: item);
+                  currentBucketName = "${item.name} bucket";
                 });
                 Navigator.pop(context);
               },

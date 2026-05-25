@@ -1,11 +1,11 @@
-import 'package:bucket_list/services/todoService.dart';
+import 'package:bucket_list/dto/bucketDTO.dart';
+import 'package:bucket_list/services/bucketService.dart';
 import 'package:flutter/material.dart';
 import 'package:bucket_list/dto/todoListDTO.dart';
 
 class BucketView extends StatefulWidget {
-  final int id;
-
-  const BucketView({super.key, required this.id});
+  final BucketDTO bucket;
+  const BucketView({super.key, required this.bucket});
 
   @override
   State<BucketView> createState() => _BucketViewState();
@@ -13,17 +13,19 @@ class BucketView extends StatefulWidget {
 
 class _BucketViewState extends State<BucketView>
     with SingleTickerProviderStateMixin {
-  final TodoService todoService = TodoService.instance;
   final TextEditingController nameController = TextEditingController();
 
-  List<TodoListDTO> todoLists = [];
-
   TabController? _controller;
+
+  BucketService bucketService = BucketService.instance;
 
   void _recreateController() {
     final old = _controller;
 
-    _controller = TabController(length: todoLists.length + 1, vsync: this);
+    _controller = TabController(
+      length: widget.bucket.todoLists.length + 1,
+      vsync: this,
+    );
 
     old?.dispose();
 
@@ -32,7 +34,6 @@ class _BucketViewState extends State<BucketView>
 
   void fetchData() {
     setState(() {
-      todoLists = todoService.getAll();
       _recreateController();
     });
   }
@@ -58,7 +59,6 @@ class _BucketViewState extends State<BucketView>
           ),
           TextButton(
             onPressed: () {
-              todoService.add(nameController.text);
               fetchData();
               Navigator.pop(context);
             },
@@ -72,8 +72,6 @@ class _BucketViewState extends State<BucketView>
   @override
   void initState() {
     super.initState();
-
-    todoLists = todoService.getAll();
     _recreateController();
   }
 
@@ -92,14 +90,14 @@ class _BucketViewState extends State<BucketView>
           isScrollable: true,
           labelColor: Colors.blue,
           onTap: (index) {
-            if (index == todoLists.length) {
-              _controller?.animateTo(todoLists.length - 1);
+            if (index == widget.bucket.todoLists.length) {
+              _controller?.animateTo(widget.bucket.todoLists.length - 1);
 
               showAddDialog();
             }
           },
           tabs: [
-            ...todoLists.map((e) => Tab(text: e.name)),
+            ...widget.bucket.todoLists.map((e) => Tab(text: e.name)),
             const Tab(icon: Icon(Icons.add, size: 20)),
           ],
         ),
@@ -108,7 +106,7 @@ class _BucketViewState extends State<BucketView>
           child: TabBarView(
             controller: _controller,
             children:
-                todoLists.map((e) {
+                widget.bucket.todoLists.map((e) {
                   return Center(child: Text(e.name));
                 }).toList() +
                 [Center()],
