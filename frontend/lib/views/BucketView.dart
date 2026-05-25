@@ -11,25 +11,24 @@ class BucketView extends StatefulWidget {
   State<BucketView> createState() => _BucketViewState();
 }
 
-class _BucketViewState extends State<BucketView>
-    with SingleTickerProviderStateMixin {
+class _BucketViewState extends State<BucketView> with TickerProviderStateMixin {
   final TextEditingController nameController = TextEditingController();
 
   TabController? _controller;
 
   BucketService bucketService = BucketService.instance;
-
   void _recreateController() {
-    final old = _controller;
-
-    _controller = TabController(
+    final newController = TabController(
       length: widget.bucket.todoLists.length + 1,
       vsync: this,
     );
 
-    old?.dispose();
+    final oldController = _controller;
+    _controller = newController;
 
-    setState(() {});
+    setState(() {
+      oldController?.dispose();
+    });
   }
 
   void fetchData() {
@@ -59,7 +58,15 @@ class _BucketViewState extends State<BucketView>
           ),
           TextButton(
             onPressed: () {
-              fetchData();
+              if (nameController.text.trim().isNotEmpty) {
+                setState(() {
+                  bucketService.addTodoList(
+                    widget.bucket.id,
+                    nameController.text,
+                  );
+                  _recreateController(); // rebuild tabs after list changes
+                });
+              }
               Navigator.pop(context);
             },
             child: const Text("Add"),
