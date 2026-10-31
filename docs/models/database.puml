@@ -1,0 +1,57 @@
+@startuml db-model
+skinparam linetype ortho
+
+class users {
+    + id: int [PK]
+    + name: str
+    + email: str
+    + profile_img_url: str 
+    + created_at: timestamp
+}
+
+class shared_bucket_lists {
+    + user_id: int [FK]
+    + bucket_list_id: int [FK]
+    + created_at: timestamp
+}
+
+class bucket_lists {
+  + id: int [PK]
+  + owner_id: int [FK]  
+  + name: str
+  + created_at: timestamp 
+}
+
+class todo_lists {
+  + id: int [PK]
+  + bucket_list_id: int [FK]
+  + name: str
+  + created_at: timestamp
+}
+
+class todo_items {
+  + id: int [PK]
+  + todo_list_id: int [FK]
+  + title: str
+  + description: str 
+  + is_done: bool
+  + created_at: timestamp
+}
+
+class comments {
+    + id: int [PK]
+    + user_id: int [FK]
+    + todo_item_id: int [FK]
+    + content: str
+    + created_at: timestamp
+}
+
+users "1" -- "0..*" bucket_lists
+bucket_lists "1" -- "0..*" todo_lists
+todo_lists "1" -- "0..*" todo_items
+users "1" -- "0..*" shared_bucket_lists
+bucket_lists "1" -- "0..*" shared_bucket_lists
+users "1" -- "0..*" comments
+todo_items "1" -- "0..*" comments
+
+@enduml

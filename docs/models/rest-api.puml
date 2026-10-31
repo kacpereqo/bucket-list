@@ -1,0 +1,31 @@
+@startuml rest-api-structure
+skinparam linetype ortho
+
+title REST API Endpoints - Bucket List Service
+
+package "Users API" {
+    [POST /api/v1/users] as RegisterUser
+    [GET /api/v1/users/{id}] as GetUser
+}
+
+package "Bucket Lists API" {
+    [GET /api/v1/bucket-lists] as GetBucketLists
+    [POST /api/v1/bucket-lists] as CreateBucketList
+    [GET /api/v1/bucket-lists/{id}] as GetBucketList
+    [DELETE /api/v1/bucket-lists/{id}] as DeleteBucketList
+}
+
+package "Todo Items API" {
+    [GET /api/v1/bucket-lists/{id}/todos] as GetTodos
+    [POST /api/v1/bucket-lists/{id}/todos] as AddTodo
+    [PATCH /api/v1/todos/{id}] as UpdateTodoStatus
+}
+
+' Optional: Connect to your database or internal services
+database "Database" as DB
+
+GetBucketLists --> DB
+CreateBucketList --> DB
+AddTodo --> DB
+
+@enduml
