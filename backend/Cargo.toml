@@ -1,0 +1,13 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4"
+serde = { version = "1", features = ["derive"] }
+utoipa = { version = "6", features = ["actix_extras"] }
+utoipa-actix-web = "0.2"
+utoipa-swagger-ui = { version = "10", features = ["actix-web"] }
+
+sqlx = { version = "0.9", features = [ "runtime-tokio", "tls-rustls-ring-webpki", "sqlite" ] }
