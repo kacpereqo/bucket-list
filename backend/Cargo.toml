@@ -8,6 +8,8 @@ actix-web = "4"
 serde = { version = "1", features = ["derive"] }
 utoipa = { version = "6", features = ["actix_extras"] }
 utoipa-actix-web = "0.2"
+utoipauto = "0.1"
 utoipa-swagger-ui = { version = "10", features = ["actix-web"] }
 
 sqlx = { version = "0.9", features = [ "runtime-tokio", "tls-rustls-ring-webpki", "sqlite" ] }
+env_logger = "0.11.11"

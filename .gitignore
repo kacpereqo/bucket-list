@@ -1,2 +1,5 @@
 /.venv
 *.db
+backend/target
+backend/Cargo.lock
+backend/__pycache__/

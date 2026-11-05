@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS todo_items (
     todo_list_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
-    is_done BOOLEAN NOT NULL DEFAULT ,
+    is_done BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT (unixepoch()),
     FOREIGN KEY (todo_list_id) REFERENCES todo_lists(id) ON DELETE CASCADE
 );
