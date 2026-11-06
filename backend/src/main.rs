@@ -1,3 +1,4 @@
+pub mod models;
 pub mod repository;
 pub mod router;
 pub mod services;
@@ -14,7 +15,7 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "info");
     env_logger::init();
 
-    let database_url = "sqlite:database .db?mode=rwc";
+    let database_url = "sqlite:database.db?mode=rwc";
     let pool = SqlitePool::connect(database_url)
         .await
         .expect("Cannot connect to db");
