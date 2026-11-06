@@ -2,10 +2,17 @@ use sqlx::SqlitePool;
 
 use crate::models::todo_items::{TodoItem, TodoItemCreate, TodoItemUpdate};
 
-pub async fn get_by_id(pool: &SqlitePool, id: i64) -> Result<TodoItem, sqlx::Error> {
-    sqlx::query_as!(TodoItem, "SELECT * FROM todo_items WHERE id = ?", id)
-        .fetch_one(pool)
-        .await
+pub async fn get_by_todo_list_id(
+    pool: &SqlitePool,
+    todo_list_id: i64,
+) -> Result<TodoItem, sqlx::Error> {
+    sqlx::query_as!(
+        TodoItem,
+        "SELECT * FROM todo_items WHERE todo_list_id = ?",
+        todo_list_id
+    )
+    .fetch_one(pool)
+    .await
 }
 
 pub async fn create(pool: &SqlitePool, todo_item: TodoItemCreate) -> Result<i64, sqlx::Error> {
