@@ -11,12 +11,10 @@ pub struct TodoItem {
     pub created_at: i64,
 }
 
-#[derive(Debug, Clone, Serialize, ToSchema)]
+#[derive(Debug, Clone, Deserialize, ToSchema)]
 pub struct TodoItemCreate {
-    pub todo_list_id: i64,
     pub title: String,
     pub description: Option<String>,
-    pub is_done: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, ToSchema)]

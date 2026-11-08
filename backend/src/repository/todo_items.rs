@@ -5,23 +5,26 @@ use crate::models::todo_items::{TodoItem, TodoItemCreate, TodoItemUpdate};
 pub async fn get_by_todo_list_id(
     pool: &SqlitePool,
     todo_list_id: i64,
-) -> Result<TodoItem, sqlx::Error> {
+) -> Result<Vec<TodoItem>, sqlx::Error> {
     sqlx::query_as!(
         TodoItem,
         "SELECT * FROM todo_items WHERE todo_list_id = ?",
         todo_list_id
     )
-    .fetch_one(pool)
+    .fetch_all(pool)
     .await
 }
 
-pub async fn create(pool: &SqlitePool, todo_item: TodoItemCreate) -> Result<i64, sqlx::Error> {
+pub async fn create(
+    pool: &SqlitePool,
+    todo_list_id: i64,
+    todo_item: TodoItemCreate,
+) -> Result<i64, sqlx::Error> {
     let result = sqlx::query!(
-        "INSERT INTO todo_items (todo_list_id, title, description, is_done) VALUES (?,?,?,?)",
-        todo_item.todo_list_id,
+        "INSERT INTO todo_items (todo_list_id, title, description) VALUES (?,?,?)",
+        todo_list_id,
         todo_item.title,
         todo_item.description,
-        todo_item.is_done
     )
     .execute(pool)
     .await?;

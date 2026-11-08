@@ -50,3 +50,9 @@ CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (todo_item_id) REFERENCES todo_items(id) ON DELETE CASCADE
 );
+
+CREATE TRIGGER add_owner_to_shared
+AFTER INSERT ON bucket_lists
+BEGIN
+    INSERT INTO shared_bucket_lists (user_id, bucket_list_id) VALUES (NEW.owner_id, NEW.id);
+END
